@@ -71,7 +71,8 @@ function MyPage({ duas, categories, subCategories }) {
 
     const handleCategoryClick = (categoryId) => {
         setSelectedCategoryId(categoryId);
-        setSelectedSubCategoryId(1); // Reset selected subcategory to default when category changes
+        setSelectedSubCategoryId(1);
+        // Reset selected subcategory to default when category changes
 
     };
 
@@ -99,7 +100,11 @@ function MyPage({ duas, categories, subCategories }) {
     return (
         <>
             <div className="py-10 flex px-12 gap-5">
+
                 <div className='w-24 h-[70vh] rounded-md bg-slate-50 shadow-md mx-auto flex justify-center items-center gap-5 flex-col'>
+                    <div className=' absolute top-10 bottom-auto'>
+                        <img src="https://duaruqyah.com/assets/dua-logo.svg" alt="logo" />
+                    </div>
                     <div className='w-10 h-10 rounded-full flex justify-center items-center bg-slate-200 shadow-lg'>
                         <OtherHousesIcon style={{ fontSize: 25, color: "gray" }} />
                     </div>
@@ -171,8 +176,9 @@ function MyPage({ duas, categories, subCategories }) {
                                                 {subCategories &&
                                                     subCategories.filter(subCat => subCat.cat_id === selectedCategoryId)
                                                         .map((subCat) => (
-                                                            <div key={subCat.subcat_id} onClick={() => handleSubCategoryClick(subCat.subcat_id)}>
-                                                                <h1 className={`cursor-pointer ${selectedSubCategoryId === subCat.subcat_id ? 'font-bold' : ''}`}>
+                                                            <div key={subCat.subcat_id} onClick={() => handleSubCategoryClick(subCat.subcat_id)} className='border-l-2 border-dotted border-green-600 py-5 flex items-center gap-2'>
+                                                                <div className='w-1.5 h-1.5 rounded-full bg-green-600 ml-[-4px]'></div>
+                                                                <h1 className={`cursor-pointer text-sm font-bold text-gray-600 opacity-70${selectedSubCategoryId === subCat.subcat_id ? '' : ''}`}>
                                                                     {subCat.subcat_name_en}
                                                                 </h1>
                                                             </div>
@@ -252,11 +258,9 @@ function MyPage({ duas, categories, subCategories }) {
                                     <span> <ToggleOffTwoToneIcon style={{ color: "gray" }} />  </span>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
-
             </div>
         </>
     )
