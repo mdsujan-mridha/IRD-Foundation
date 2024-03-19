@@ -19,6 +19,7 @@ import ReportGmailerrorredOutlinedIcon from '@mui/icons-material/ReportGmailerro
 import TranslateOutlinedIcon from '@mui/icons-material/TranslateOutlined';
 import LivingOutlinedIcon from '@mui/icons-material/LivingOutlined';
 import ToggleOffTwoToneIcon from '@mui/icons-material/ToggleOffTwoTone';
+import VolunteerActivismTwoToneIcon from '@mui/icons-material/VolunteerActivismTwoTone';
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
     '& .MuiBadge-badge': {
@@ -92,19 +93,27 @@ function MyPage({ duas, categories, subCategories }) {
         newAudio.play();
         setAudio(newAudio);
     };
+    // count sub category 
+    const countSubCategories = (categoryId) => {
+        return subCategories.filter(subCat => subCat.cat_id === categoryId).length;
+    };
 
+    // count duas
+    const countDuas = (categoryId) => {
+        return duas.filter(dua => dua.cat_id === categoryId).length;
+    };
     // Check if duas is an array before filtering
     const filteredDuas = Array.isArray(duas) ? duas.filter(dua => dua.cat_id === selectedCategoryId && dua.subcat_id === selectedSubCategoryId) : [];
 
 
     return (
         <>
-            <div className="py-10 flex px-12 gap-5">
-
-                <div className='w-24 h-[70vh] rounded-md bg-slate-50 shadow-md mx-auto flex justify-center items-center gap-5 flex-col'>
-                    <div className=' absolute top-10 bottom-auto'>
+            <div className="py-10 flex lg:px-12 gap-5 flex-col lg:flex-row px-5">
+                <div className='w-full lg:w-[100px] h-20 lg:h-[70vh] rounded-md bg-slate-50 shadow-md mx-auto flex justify-center items-center gap-5 lg:flex-col relative flex-row'>
+                    <div className='lg:absolute lg:top-10 lg:bottom-auto'>
                         <img src="https://duaruqyah.com/assets/dua-logo.svg" alt="logo" />
                     </div>
+
                     <div className='w-10 h-10 rounded-full flex justify-center items-center bg-slate-200 shadow-lg'>
                         <OtherHousesIcon style={{ fontSize: 25, color: "gray" }} />
                     </div>
@@ -126,16 +135,19 @@ function MyPage({ duas, categories, subCategories }) {
                     <div className='w-10 h-10 rounded-full flex justify-center items-center bg-slate-200 shadow-lg'>
                         <SpaOutlinedIcon style={{ fontSize: 25, color: "gray" }} />
                     </div>
+                    <div className='w-12 h-12 rounded-lg bg-green-600 lg:absolute lg:top-auto lg:bottom-5 flex justify-center items-center'>
+                        <VolunteerActivismTwoToneIcon style={{ color: "white" }} />
+                    </div>
                 </div>
 
                 <div className="w-full pt-12">
-                    <div className='flex justify-between items-center py-5'>
+                    <div className='lg:flex justify-between items-center py-5 hidden'>
                         <h1 className='text-2xl font-bold'> Dua Page </h1>
                         <div className='flex justify-center items-center w-3/5 relative pb-5'>
                             <input
                                 type="text"
                                 placeholder='Search by Dua Name'
-                                className='h-10 w-56 border-2 rounded-lg outline-none pl-5 absolute top-0 left-auto right-10 bottom-0'
+                                className='h-10 w-72 border-2 rounded-lg outline-none pl-5 absolute top-0 left-auto right-10 bottom-0'
                             />
                             <button className='h-9 w-10 bg-slate-200 rounded-md ml-[-41px] absolute top-0 left-auto right-10'> <SearchOutlinedIcon /> </button>
                         </div>
@@ -147,12 +159,12 @@ function MyPage({ duas, categories, subCategories }) {
                             <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
                         </StyledBadge>
                     </div>
-                    <div className='flex justify-between '>
-                        <div className='w-[350px] h-[70vh] bg-slate-50 shadow-md flex justify-center items-center gap-2 flex-col rounded-b-lg'>
+                    <div className='flex justify-between flex-col lg:flex-row w-full'>
+                        <div className='w-full lg:w-[350px] h-[70vh] bg-slate-50 shadow-md flex justify-center items-center gap-2 flex-col rounded-b-lg'>
                             <div className=' bg-green-600 w-full h-16 rounded-t-lg flex justify-center items-center'>
                                 <h1 className='text-white font-bold'> Categories </h1>
                             </div>
-                            <div className="overflow-y-auto h-[60vh]">
+                            <div className="overflow-y-auto h-[60vh] scrollbar-thin scrollbar-track-gray-400">
                                 {categories &&
                                     categories.map((category) => (
                                         <StyledAccordion key={category.cat_id} expanded={expandedCategoryId === category.cat_id} onChange={() => handleAccordionChange(category.cat_id)} >
@@ -160,15 +172,20 @@ function MyPage({ duas, categories, subCategories }) {
                                                 aria-controls={`category-${category.cat_id}-content`}
                                                 id={`category-${category.cat_id}-header`}
                                             >
-                                                <div key={category.cat_id} onClick={() => handleCategoryClick(category.cat_id)} className='flex justify-between items-center'>
-                                                    <img src={`https://duaruqyah.com/assets/icon/${category?.cat_icon}.svg`} alt={category.cat_icon} />
-                                                    <div>
-                                                        <h1 className={`cursor-pointer ${selectedCategoryId === category.cat_id ? 'font-bold' : ''}`}>
-                                                            {category.cat_name_en}
-                                                        </h1>
-                                                        <span> Subcategory:7 </span>
+                                                <div key={category.cat_id} onClick={() => handleCategoryClick(category.cat_id)} className='flex justify-between items-center gap-4 w-full'>
+                                                    <div className='flex gap-2 items-center'>
+                                                        <img src={`https://duaruqyah.com/assets/icon/${category?.cat_icon}.svg`} alt={category.cat_icon} />
+                                                        <div>
+                                                            <h1 className={`cursor-pointer text-lg font-bold text-gray-500${selectedCategoryId === category.cat_id ? '' : ''}`}>
+                                                                {category.cat_name_en}
+                                                            </h1>
+                                                            <span className='text-gray-500 opacity-70 text-md'> Subcategory: {countSubCategories(category.cat_id)}</span>
+                                                        </div>
                                                     </div>
-                                                    <div>
+                                                    <div className='flex flex-col justify-end items-end gap-1 border-l-2 border-gray-200 px-2'>
+                                                        <h1> {countDuas(category.cat_id)} </h1>
+                                                        <h1 className='text-gray-400 text-sm font-bold'> Duas </h1>
+
                                                     </div>
                                                 </div>
                                             </AccordionSummary>
@@ -188,8 +205,8 @@ function MyPage({ duas, categories, subCategories }) {
                                     ))}
                             </div>
                         </div>
-                        <div className='w-3/5 h-[90vh]'>
-                            <div className='flex flex-col overflow-y-scroll gap-2 h-[80vh] w-full'>
+                        <div className='w-full lg:w-3/5 h-[90vh]'>
+                            <div className='flex flex-col overflow-y-scroll gap-2 h-[80vh] w-full scrollbar-thin scrollbar-track-gray-400'>
                                 <div className='w-full rounded-xl bg-white flex justify-start items-center px-10 py-5'>
                                     <h1 className='text-md font-bold'> <span className='text-green-600'>section:</span> {categories.find(category => category.cat_id === selectedCategoryId)?.cat_name_en} </h1>
                                 </div>
@@ -233,8 +250,7 @@ function MyPage({ duas, categories, subCategories }) {
                                 </div>
                             </div>
                         </div>
-
-                        <div className='w-1/6 h-[70vh] rounded-md bg-slate-50 shadow-md px-5'>
+                        <div className='w-full lg:w-1/6 h-[70vh] rounded-md bg-slate-50 shadow-md px-5'>
                             <h1 className='text-2xl font-bold text-center py-5'> Settings </h1>
                             <div className='flex gap-5 flex-col'>
                                 <div className='flex px-2  items-center bg-slate-100 rounded-md h-16 gap-2'>
