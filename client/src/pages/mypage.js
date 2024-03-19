@@ -11,6 +11,8 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { styled } from '@mui/material/styles';
 import Badge from '@mui/material/Badge';
 import Avatar from '@mui/material/Avatar';
+import { Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
     '& .MuiBadge-badge': {
@@ -44,6 +46,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 
 
 function MyPage({ duas, categories, subCategories }) {
+    const [expandedCategoryId, setExpandedCategoryId] = useState(null);
     const [selectedCategoryId, setSelectedCategoryId] = useState(1); // Default category ID
     const [selectedSubCategoryId, setSelectedSubCategoryId] = useState(1); // Default subcategory ID
 
@@ -54,6 +57,9 @@ function MyPage({ duas, categories, subCategories }) {
 
     const handleSubCategoryClick = (subCategoryId) => {
         setSelectedSubCategoryId(subCategoryId);
+    };
+    const handleAccordionChange = (categoryId) => {
+        setExpandedCategoryId(expandedCategoryId === categoryId ? null : categoryId);
     };
 
     // Check if duas is an array before filtering
