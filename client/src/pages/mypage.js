@@ -11,8 +11,14 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { styled } from '@mui/material/styles';
 import Badge from '@mui/material/Badge';
 import Avatar from '@mui/material/Avatar';
-import { Accordion, AccordionSummary, AccordionDetails, makeStyles } from '@mui/material';
-
+import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
+import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
+import ReportGmailerrorredOutlinedIcon from '@mui/icons-material/ReportGmailerrorredOutlined';
+import TranslateOutlinedIcon from '@mui/icons-material/TranslateOutlined';
+import LivingOutlinedIcon from '@mui/icons-material/LivingOutlined';
+import ToggleOffTwoToneIcon from '@mui/icons-material/ToggleOffTwoTone';
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
     '& .MuiBadge-badge': {
@@ -58,7 +64,7 @@ const StyledAccordion = styled(Accordion)(({ theme }) => ({
 function MyPage({ duas, categories, subCategories }) {
 
 
-
+    const [audio, setAudio] = useState(null);
     const [expandedCategoryId, setExpandedCategoryId] = useState(null);
     const [selectedCategoryId, setSelectedCategoryId] = useState(1); // Default category ID
     const [selectedSubCategoryId, setSelectedSubCategoryId] = useState(1); // Default subcategory ID
@@ -76,6 +82,16 @@ function MyPage({ duas, categories, subCategories }) {
         setExpandedCategoryId(expandedCategoryId === categoryId ? null : categoryId);
     };
 
+    // handle audio 
+    const playAudio = (audioUrl) => {
+        if (audio) {
+            audio.pause(); // Pause currently playing audio if any
+        }
+        const newAudio = new Audio(audioUrl);
+        newAudio.play();
+        setAudio(newAudio);
+    };
+
     // Check if duas is an array before filtering
     const filteredDuas = Array.isArray(duas) ? duas.filter(dua => dua.cat_id === selectedCategoryId && dua.subcat_id === selectedSubCategoryId) : [];
 
@@ -84,25 +100,25 @@ function MyPage({ duas, categories, subCategories }) {
         <>
             <div className="py-10 flex px-12 gap-5">
                 <div className='w-24 h-[70vh] rounded-md bg-slate-50 shadow-md mx-auto flex justify-center items-center gap-5 flex-col'>
-                    <div className='w-10 h-10 rounded-full flex justify-center items-center bg-slate-300 shadow-lg'>
+                    <div className='w-10 h-10 rounded-full flex justify-center items-center bg-slate-200 shadow-lg'>
                         <OtherHousesIcon style={{ fontSize: 25, color: "gray" }} />
                     </div>
-                    <div className='w-10 h-10 rounded-full flex justify-center items-center bg-slate-300 shadow-lg'>
+                    <div className='w-10 h-10 rounded-full flex justify-center items-center bg-slate-200 shadow-lg'>
                         <GridViewIcon style={{ fontSize: 25, color: "gray" }} />
                     </div>
-                    <div className='w-10 h-10 rounded-full flex justify-center items-center bg-slate-300 shadow-lg'>
+                    <div className='w-10 h-10 rounded-full flex justify-center items-center bg-slate-200 shadow-lg'>
                         <LightbulbOutlinedIcon style={{ fontSize: 25, color: "gray" }} />
                     </div>
-                    <div className='w-10 h-10 rounded-full flex justify-center items-center bg-slate-300 shadow-lg'>
+                    <div className='w-10 h-10 rounded-full flex justify-center items-center bg-slate-200 shadow-lg'>
                         <TurnedInNotOutlinedIcon style={{ fontSize: 25, color: "gray" }} />
                     </div>
-                    <div className='w-10 h-10 rounded-full flex justify-center items-center bg-slate-300 shadow-lg'>
+                    <div className='w-10 h-10 rounded-full flex justify-center items-center bg-slate-200 shadow-lg'>
                         <HealthAndSafetyOutlinedIcon style={{ fontSize: 25, color: "gray" }} />
                     </div>
-                    <div className='w-10 h-10 rounded-full flex justify-center items-center bg-slate-300 shadow-lg'>
+                    <div className='w-10 h-10 rounded-full flex justify-center items-center bg-slate-200 shadow-lg'>
                         <ImportContactsOutlinedIcon style={{ fontSize: 25, color: "gray" }} />
                     </div>
-                    <div className='w-10 h-10 rounded-full flex justify-center items-center bg-slate-300 shadow-lg'>
+                    <div className='w-10 h-10 rounded-full flex justify-center items-center bg-slate-200 shadow-lg'>
                         <SpaOutlinedIcon style={{ fontSize: 25, color: "gray" }} />
                     </div>
                 </div>
@@ -166,15 +182,76 @@ function MyPage({ duas, categories, subCategories }) {
                                     ))}
                             </div>
                         </div>
-                        <div className='w-3/5 h-[100vh] rounded-md bg-slate-50 shadow-md'>
-                            {filteredDuas.map((dua, index) => (
-                                <div key={index}>
-                                    <h1> {dua?.dua_name_en} </h1>
+                        <div className='w-3/5 h-[90vh]'>
+                            <div className='flex flex-col overflow-y-scroll gap-2 h-[80vh] w-full'>
+                                <div className='w-full rounded-xl bg-white flex justify-start items-center px-10 py-5'>
+                                    <h1 className='text-md font-bold'> <span className='text-green-600'>section:</span> {categories.find(category => category.cat_id === selectedCategoryId)?.cat_name_en} </h1>
                                 </div>
-                            ))}
+                                <div className='flex flex-col gap-2 items-center'>
+                                    {filteredDuas.map((dua, index) => (
+                                        <div key={index} className='h-auto w-full bg-white rounded-md px-5 py-5'>
+                                            <div className='flex gap-2 items-center'>
+                                                <img src="https://duaruqyah.com/assets/duacard.svg" alt="dua" />
+                                                <h1 className='text-green-600 font-bold text-lg'> {dua?.dua_name_en} </h1>
+                                            </div>
+                                            <div className='py-5'>
+                                                <p className='font-bold text-lg opacity-70'> {dua?.top_en} </p>
+                                                <p className='font-bold text-2xl opacity-70 px-5 py-5 pl-10 leading-10 text-right'> {dua?.dua_arabic} </p>
+                                                {
+                                                    dua?.transliteration_en ? <p className='text-lg font-semibold italic opacity-75'> Transliteration: {dua?.transliteration_en} </p> : ""
+                                                }
+                                                {
+                                                    dua?.translation_en ? <p className='text-lg font-semibold opacity-75'> Translation: {dua?.translation_en} </p> : ""
+                                                }
+                                                <p className='text-lg text-green-600 font-bold pt-5'> Reference:  </p>
+                                                <p className='text-lg font-bold pt-2 opacity-70'> {dua?.refference_en} </p>
+                                            </div>
+                                            <div className='flex justify-between items-center'>
+                                                <div>
+                                                    {
+                                                        dua?.audio !== null ? <button className='w-12 h-12 bg-green-600 rounded-full' onClick={() => playAudio(dua.audio)}>
+                                                            <PlayArrowIcon style={{ fontSize: 30, color: 'white' }} />
+                                                        </button> : ""
+                                                    }
+                                                </div>
+                                                <div className='flex gap-5 item'>
+                                                    <ContentCopyOutlinedIcon style={{ fontSize: 20, color: "black", opacity: 60 }} />
+                                                    <TurnedInNotOutlinedIcon style={{ fontSize: 20, color: "black", opacity: 60 }} />
+                                                    <LightbulbOutlinedIcon style={{ fontSize: 20, color: "black", opacity: 60 }} />
+                                                    <ShareOutlinedIcon style={{ fontSize: 20, color: "black", opacity: 60 }} />
+                                                    <ReportGmailerrorredOutlinedIcon style={{ fontSize: 20, color: "black", opacity: 60 }} />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
                         </div>
 
-                        <div className='w-1/6 h-[70vh] rounded-md bg-slate-50 shadow-md'>
+                        <div className='w-1/6 h-[70vh] rounded-md bg-slate-50 shadow-md px-5'>
+                            <h1 className='text-2xl font-bold text-center py-5'> Settings </h1>
+                            <div className='flex gap-5 flex-col'>
+                                <div className='flex px-2  items-center bg-slate-100 rounded-md h-16 gap-2'>
+                                    <span className='w-12 h-12 bg-slate-200 rounded-full flex justify-center items-center'> <TranslateOutlinedIcon style={{ opacity: 60, color: "gray" }} /> </span>
+                                    <h1 className='text-md font-bold opacity-60'>  Language Settings  </h1>
+                                </div>
+                                <div className='flex px-2  items-center bg-slate-100 rounded-md h-16 gap-2'>
+                                    <span className='w-12 h-12 bg-slate-200 rounded-full flex justify-center items-center'> <LivingOutlinedIcon style={{ opacity: 60, color: "gray" }} /> </span>
+                                    <h1 className='text-md font-bold opacity-60'>  General Settings  </h1>
+                                </div>
+                                <div className='flex px-2  items-center bg-slate-100 rounded-md h-16 gap-2'>
+                                    <span className='w-12 h-12 bg-slate-200 rounded-full flex justify-center items-center'> <GridViewIcon style={{ opacity: 60, color: "gray" }} /> </span>
+                                    <h1 className='text-md font-bold opacity-60'>  Font Settings </h1>
+                                </div>
+                                <div className='flex px-2  items-center bg-slate-100 rounded-md h-16 gap-2 border-l-8 border-green-600'>
+                                    <span className='w-12 h-12 bg-slate-200 rounded-full flex justify-center items-center'> <GridViewIcon style={{ opacity: 60, color: "gray" }} /> </span>
+                                    <h1 className='text-md font-bold opacity-60'>  Appearance Settings  </h1>
+                                </div>
+                                <div className='flex justify-between items-center h-20 border-b-2 border-l-2 border-r-2 p-2 rounded-b-md'>
+                                    <h1 className='text-xl font-bold text-gray-700 opacity-80'>  Night Mode  </h1>
+                                    <span> <ToggleOffTwoToneIcon style={{ color: "gray" }} />  </span>
+                                </div>
+                            </div>
 
                         </div>
                     </div>
